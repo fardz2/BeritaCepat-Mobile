@@ -1,28 +1,29 @@
 import 'package:berita_mobile/app/routes/app_pages.dart';
-import 'package:berita_mobile/services/api_service.dart';
+import 'package:berita_mobile/app/widgets/berita_card.dart';
+import 'package:berita_mobile/app/widgets/berita_card_single.dart';
 
 import '../controllers/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 class MainView extends GetView<HomeController> {
-  const MainView({Key? key}) : super(key: key);
+  const MainView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Obx(() => controller.loading.value
+        child: Obx(
+          () => controller.loading.value
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : RefreshIndicator(
-                  onRefresh: () {
-                    return controller.getBerita();
-                  },
+                  onRefresh: () => controller.getBerita(),
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           padding: const EdgeInsets.all(15),
@@ -41,125 +42,121 @@ class MainView extends GetView<HomeController> {
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600),
-                                  )
+                                  ),
                                 ],
                               ),
                               IconButton(
-                                  onPressed: () {
-                                    Get.toNamed(Routes.SEARCH_PAGE);
-                                  },
-                                  icon: const Icon(Icons.search))
+                                onPressed: () {
+                                  Get.toNamed(Routes.SEARCH_PAGE);
+                                },
+                                icon: const Icon(Icons.search),
+                              ),
                             ],
                           ),
                         ),
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Terbaru",
-                                style: TextStyle(fontSize: 15),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Get.toNamed('/detail',
-                                      arguments: controller
-                                          .beritaTerbaru.value.titleSlug);
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Image.network(
-                                        "$API_URL/${controller.beritaTerbaru.value.thumbnail.toString()}"),
-                                    Text(
-                                      controller.beritaTerbaru.value.title
-                                          .toString(),
-                                      style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      controller.beritaTerbaru.value.categories!
-                                          .categoryName
-                                          .toString(),
-                                      style: TextStyle(color: Colors.blue),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const Text(
-                                "Trending",
-                                style: TextStyle(fontSize: 15),
-                              ),
-                            ],
+                          child: Text(
+                            "Terbaru",
+                            style: TextStyle(
+                                fontSize: 21, fontWeight: FontWeight.bold),
                           ),
                         ),
                         SizedBox(
-                            height: 400,
-                            child: ListView.builder(
-                                itemCount: controller.trending.length,
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                padding: const EdgeInsets.only(left: 15),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Get.toNamed('/detail',
-                                          arguments: controller
-                                              .trending.value[index].titleSlug);
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(right: 15),
-                                      width: 200,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            height: 200,
-                                            width: 200,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                image: DecorationImage(
-                                                    image: NetworkImage(
-                                                      // ignore: invalid_use_of_protected_member
-                                                      "$API_URL/${controller.trending.value[index].thumbnail.toString()}",
-                                                    ),
-                                                    fit: BoxFit.cover)),
-                                          ),
-                                          Text(
-                                            controller
-                                                .trending.value[index].title
-                                                .toString(),
-                                            style: const TextStyle(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            overflow: TextOverflow
-                                                .ellipsis, // Mengatur overflow ke TextOverflow.ellipsis
-                                            maxLines: 2,
-                                          ),
-                                          Text(
-                                            controller.trending.value[index]
-                                                .categories!.categoryName
-                                                .toString(),
-                                            style: const TextStyle(
-                                                color: Colors.blue),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                })),
+                          height: 250,
+                          child: ListView.builder(
+                            itemCount: controller.beritaTerbaru.length,
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.only(left: 15),
+                            itemBuilder: (BuildContext context, int index) {
+                              return BeritaCard(
+                                title: controller.beritaTerbaru[index].title
+                                    .toString(),
+                                thumbnail: controller
+                                    .beritaTerbaru[index].thumbnail
+                                    .toString(),
+                                categoryName: controller.beritaTerbaru[index]
+                                    .categories!.categoryName
+                                    .toString(),
+                                titleSlug: controller
+                                    .beritaTerbaru[index].titleSlug
+                                    .toString(),
+                                categorySlug: controller.beritaTerbaru[index]
+                                    .categories!.categorySlug
+                                    .toString(),
+                              );
+                            },
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(15),
+                          child: Text(
+                            "Trending",
+                            style: TextStyle(
+                                fontSize: 21, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 250,
+                          child: ListView.builder(
+                            itemCount: controller.trending.length,
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.only(left: 15),
+                            itemBuilder: (BuildContext context, int index) {
+                              return BeritaCard(
+                                title:
+                                    controller.trending[index].title.toString(),
+                                thumbnail: controller.trending[index].thumbnail
+                                    .toString(),
+                                categoryName: controller
+                                    .trending[index].categories!.categoryName
+                                    .toString(),
+                                titleSlug: controller.trending[index].titleSlug
+                                    .toString(),
+                                categorySlug: controller
+                                    .trending[index].categories!.categorySlug
+                                    .toString(),
+                              );
+                            },
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(15),
+                          child: Text(
+                            "Rekomendasi Untukmu",
+                            style: TextStyle(
+                                fontSize: 21, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height - 200,
+                          child: ListView.builder(
+                            itemCount: controller.recomendation.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            itemBuilder: (BuildContext context, int index) {
+                              return BeritaCardSingle(
+                                title: controller.recomendation[index].title
+                                    .toString(),
+                                thumbnail: controller
+                                    .recomendation[index].thumbnail
+                                    .toString(),
+                                categoryName: controller.recomendation[index]
+                                    .categories!.categoryName
+                                    .toString(),
+                                titleSlug: controller
+                                    .recomendation[index].titleSlug
+                                    .toString(),
+                              );
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ))),
+                ),
+        ),
+      ),
     );
   }
 }

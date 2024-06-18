@@ -26,7 +26,7 @@ class RegisterView extends GetView<RegisterController> {
                       controller: controller.nameController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: 'Nama',
+                        labelText: 'Nama',
                       ),
                       validator: Validation().validationName,
                     ),
@@ -37,7 +37,7 @@ class RegisterView extends GetView<RegisterController> {
                       controller: controller.emailController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: 'Email',
+                        labelText: 'Email',
                       ),
                       validator: Validation().validationEmail,
                     ),
@@ -49,7 +49,7 @@ class RegisterView extends GetView<RegisterController> {
                       obscureText: true,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: 'Password',
+                        labelText: 'Password',
                       ),
                       validator: Validation().validationPassword,
                     ),
@@ -61,7 +61,7 @@ class RegisterView extends GetView<RegisterController> {
                       obscureText: true,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: 'Confirm Password',
+                        labelText: 'Confirm Password',
                       ),
                       validator: (String? value) {
                         return Validation().validationconfirmPassword(
@@ -69,35 +69,40 @@ class RegisterView extends GetView<RegisterController> {
                             controller.confirmPasswordController.text);
                       },
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (controller.formKey.currentState!.validate()) {
-                          controller.register();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xffD567CD),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text("Belum punya akun?"),
-                        GestureDetector(
-                          child: const Text(
-                            "Register",
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                          onTap: () {
-                            Get.back();
+                        Row(
+                          children: [
+                            const Text("Sudah punya akun?"),
+                            GestureDetector(
+                              child: const Text(
+                                "Login",
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                              onTap: () {
+                                Get.back();
+                              },
+                            )
+                          ],
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (controller.formKey.currentState!.validate()) {
+                              controller.register();
+                            }
                           },
-                        )
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          child: const Text(
+                            'Register',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ],
                     )
                   ],

@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:berita_mobile/services/user_check.dart';
 import 'package:http/http.dart' as http;
 
-const API_URL = "https://986a-182-253-124-24.ngrok-free.app";
+const API_URL = "https://amused-mayfly-ace.ngrok-free.app";
 
 class ApiService {
   final client = http.Client();
   final user_check = UserCheck();
-  Future<dynamic> getBerita() async {
+  Future<Map<String, dynamic>> getBerita() async {
     final url = Uri.parse('$API_URL/api/news');
     try {
       final response = await client.get(url);
@@ -23,7 +23,37 @@ class ApiService {
     }
   }
 
-  Future<dynamic> getDetail(String slug) async {
+  Future<Map<String, dynamic>> getCategory() async {
+    final url = Uri.parse('$API_URL/api/category');
+    try {
+      final response = await client.get(url);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data;
+      } else {
+        throw Exception("Failed to get categories");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> getDetailCategory(String slug) async {
+    final url = Uri.parse('$API_URL/api/category/$slug');
+    try {
+      final response = await client.get(url);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data["data"];
+      } else {
+        throw Exception("Failed to get categories");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> getDetail(String slug) async {
     final url = Uri.parse('$API_URL/api/news/$slug');
     try {
       final response = await client.get(url);

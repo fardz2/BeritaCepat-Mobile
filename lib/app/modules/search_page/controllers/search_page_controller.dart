@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:berita_mobile/app/data/Berita.dart';
 import 'package:berita_mobile/services/api_service.dart';
 
@@ -24,12 +22,11 @@ class SearchPageController extends GetxController {
     try {
       final response = await ApiService().searchNews(search.text);
       for (var news in response) {
-        String imageUrl = news["thumbnail"];
         searchNews.add(Berita(
             id: news["id"],
             title: news["title"],
             titleSlug: news["title_slug"],
-            thumbnail: imageUrl.replaceFirst('http://127.0.0.1:8000/', ''),
+            thumbnail: news["thumbnail"],
             categories: Categories(
                 id: news["categories"][0]["id"],
                 categoryName: news["categories"][0]["category_name"],

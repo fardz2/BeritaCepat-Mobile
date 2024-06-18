@@ -34,8 +34,15 @@ class DetailView extends GetView<DetailController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.network(
-                          "$API_URL/${controller.detailBerita.value.thumbnail.toString()}"),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            20.0), // Adjust the radius as needed
+                        child: Image.network(
+                          "$API_URL/${controller.detailBerita.value.thumbnail.toString()}",
+                          fit: BoxFit
+                              .cover, // This ensures the image covers the entire container
+                        ),
+                      ),
                       Text(
                         controller.detailBerita.value.title.toString(),
                         style: const TextStyle(

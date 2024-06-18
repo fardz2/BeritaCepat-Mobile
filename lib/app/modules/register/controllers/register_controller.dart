@@ -22,6 +22,13 @@ class RegisterController extends GetxController {
     try {
       await ApiService().register(
           nameController.text, emailController.text, passwordController.text);
+      Get.snackbar(
+        "Register",
+        "Register berhasil, silahkan login",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
       Get.back();
     } catch (e) {
       print(e);

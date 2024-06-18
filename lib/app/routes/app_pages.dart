@@ -2,11 +2,12 @@ import 'package:get/get.dart';
 
 import '../modules/detail/bindings/detail_binding.dart';
 import '../modules/detail/views/detail_view.dart';
+import '../modules/detail_category/bindings/detail_category_binding.dart';
+import '../modules/detail_category/views/detail_category_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
-
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/search_page/bindings/search_page_binding.dart';
@@ -44,6 +45,11 @@ class AppPages {
       name: _Paths.REGISTER,
       page: () => const RegisterView(),
       binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_CATEGORY,
+      page: () => const DetailCategoryView(),
+      binding: DetailCategoryBinding(),
     ),
   ];
 }

@@ -12,7 +12,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 // ignore: must_be_immutable
 class HomeView extends GetView<HomeController> {
   HomeView({super.key});
-  var controller = Get.put<HomeController>(HomeController());
+  var contrller = Get.put<HomeController>(HomeController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,9 +26,9 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           PersistentTabConfig(
-            screen: CategoryView(),
+            screen: const CategoryView(),
             item: ItemConfig(
-              icon: Icon(Icons.category),
+              icon: const Icon(Icons.category),
               title: "Kategori",
             ),
           ),
