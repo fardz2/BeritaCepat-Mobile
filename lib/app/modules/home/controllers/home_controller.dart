@@ -17,9 +17,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    user_check.box.read('token') == null
-        ? user_login.value = false
-        : user_login.value = true;
+    getSatusLoginUser();
 
     getBerita();
     getCategory();

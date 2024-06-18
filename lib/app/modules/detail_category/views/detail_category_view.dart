@@ -28,6 +28,7 @@ class DetailCategoryView extends GetView<DetailCategoryController> {
                         child: Text("Berita Tidak Ditemukan"),
                       )
                     : ListView.builder(
+                        padding: const EdgeInsets.all(15),
                         itemCount: controller.category_news.length,
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemBuilder: (context, index) {

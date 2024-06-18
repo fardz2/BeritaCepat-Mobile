@@ -16,7 +16,7 @@ class DetailView extends GetView<DetailController> {
     timeago.setLocaleMessages('id', timeago_id.IdMessages());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DetailView'),
+        title: const Text('Detail Berita'),
         centerTitle: true,
       ),
       body: Obx(() => controller.loading.value
@@ -69,7 +69,7 @@ class DetailView extends GetView<DetailController> {
                         },
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
-                          hintText: 'Enter a search term',
+                          hintText: 'Komentar',
                           suffixIcon: IconButton(
                             onPressed: controller.createComment,
                             icon: const Icon(Icons.send),
@@ -91,6 +91,22 @@ class DetailView extends GetView<DetailController> {
                               itemBuilder: ((context, index) {
                                 var comment = controller.comments[index];
                                 return ListTile(
+                                  trailing: controller.user_check.box
+                                                  .read('role') ==
+                                              "admin" ||
+                                          controller.user_check.box
+                                                  .read("id")
+                                                  .toString() ==
+                                              comment.comment?.id.toString()
+                                      ? IconButton(
+                                          onPressed: () {
+                                            controller.deleteComment(
+                                                comment.comment!.id.toString());
+                                          },
+                                          icon: const Icon(Icons.delete))
+                                      : const SizedBox(
+                                          height: 0,
+                                        ),
                                   title: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -99,10 +115,20 @@ class DetailView extends GetView<DetailController> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(comment.name.toString()),
-                                          Text(timeago.format(
-                                              comment.comment!.createdAt!,
-                                              locale: 'id'))
+                                          Text(
+                                            comment.name.toString(),
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            timeago.format(
+                                                comment.comment!.createdAt!,
+                                                locale: 'id'),
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ],

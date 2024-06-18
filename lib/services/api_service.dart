@@ -103,6 +103,22 @@ class ApiService {
     }
   }
 
+  Future<void> deleteComment(String id) async {
+    final url = Uri.parse('$API_URL/api/news/$id/comment');
+    try {
+      await client.delete(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${user_check.box.read("token")}',
+        },
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> login(String email, String password) async {
     final url = Uri.parse('$API_URL/api/login');
     try {
@@ -118,6 +134,8 @@ class ApiService {
         final data = jsonDecode(response.body);
 
         user_check.box.write("token", data["token"]);
+        user_check.box.write("role", data["data"]["role"]);
+        user_check.box.write("id", data["data"]["id"]);
       } else {
         throw Exception("Failed to get berita");
       }
@@ -153,6 +171,7 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         user_check.box.remove("token");
+        user_check.box.remove("role");
       } else {
         print('Failed to load data. Status code: ${response.statusCode}');
       }

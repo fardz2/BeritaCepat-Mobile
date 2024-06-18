@@ -1,3 +1,4 @@
+import 'package:berita_mobile/app/modules/home/controllers/home_controller.dart';
 import 'package:berita_mobile/services/api_service.dart';
 
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ class LoginController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
+  HomeController homeController = Get.find();
   @override
   void onClose() {
     emailController.dispose();
@@ -18,14 +19,15 @@ class LoginController extends GetxController {
   Future<void> login() async {
     try {
       await ApiService().login(emailController.text, passwordController.text);
+      Get.back();
       Get.snackbar(
         "Login",
         "Login Berhasil",
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.green,
         colorText: Colors.white,
       );
-      Get.back();
+      homeController.getSatusLoginUser();
     } catch (e) {
       print(e);
     }

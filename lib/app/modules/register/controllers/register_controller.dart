@@ -25,7 +25,7 @@ class RegisterController extends GetxController {
       Get.snackbar(
         "Register",
         "Register berhasil, silahkan login",
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.green,
         colorText: Colors.white,
       );

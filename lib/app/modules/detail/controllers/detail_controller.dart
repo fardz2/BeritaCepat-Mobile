@@ -27,6 +27,7 @@ class DetailController extends GetxController {
 
   Future<void> getDetail() async {
     loading.value = true;
+    print(user_check.box.read("id").toString());
     try {
       final response = await ApiService().getDetail(slug);
       String imageUrl = response["thumbnail"];
@@ -60,9 +61,33 @@ class DetailController extends GetxController {
         Get.snackbar("Komentar", "Mohon isi Komentar anda");
       } else {
         await ApiService().createComment(slug, comment.text);
+        comment.text = "";
         getDetail();
-        Get.snackbar("Komentar", "Berhasil menambahkan Komentar");
+        Get.snackbar(
+          "Komentar",
+          "Komentar berhasil ditambahkan",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
       }
+    } catch (e) {
+      print('Error occurred: $e');
+    }
+  }
+
+  Future<void> deleteComment(String id) async {
+    try {
+      await ApiService().deleteComment(id);
+      getDetail();
+      Get.snackbar(
+        "Komentar",
+        "Komentar berhasil dihapus",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+      Get.snackbar("Komentar", "Berhasil menambahkan Komentar");
     } catch (e) {
       print('Error occurred: $e');
     }
